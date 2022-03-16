@@ -26,6 +26,10 @@ namespace Haasonline.Public.ExchangeDriver.Tests
 
         public void Start()
         {
+            AllowZeroFee = true;
+            AllowZeroPriceDecimals = true;
+            AllowZeroAmountDecimals = true;
+
             ((IScriptApi)Api).Error += OnError;
 
             Api.GetMarkets();
@@ -120,7 +124,7 @@ namespace Haasonline.Public.ExchangeDriver.Tests
         private void AssertTick(IScriptTick tick)
         {
             Assert.IsNotNull(tick, "Bad API response");
-            Assert.IsTrue(tick.Close > 0.0M, "Close price is zero");
+            Assert.IsTrue(tick.Close > 0.0M, "Close price is zero -> " + tick.Market.PrimaryCurrency+ " - " + tick.Market.SecondaryCurrency);
 
             if (tick.BuyPrice != 0.0M)
                 Assert.IsTrue(tick.BuyPrice > tick.SellPrice, "Buy and sell price reversed");
